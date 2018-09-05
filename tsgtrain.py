@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 
 plt.style.use('seaborn-white')
 import seaborn as sns
-
+import time
 sns.set_style("white")
 
 from sklearn.model_selection import train_test_split
@@ -45,6 +45,7 @@ from modelutil import build_model
 from modelutil import downsample
 from modelutil import dice_loss
 from modelutil import bce_dice_loss
+from modelutil import HourGlassNet
 
 from tqdm import tqdm_notebook
 
@@ -146,8 +147,7 @@ axs[1].imshow(x_train[10].squeeze(), cmap="Greys")
 axs[1].set_title("Scaled image")
 
 input_layer = Input((img_size_target, img_size_target, 1))
-output_layer = build_model(input_layer, 32)
-
+output_layer = HourGlassNet(input_layer, 32)
 model = Model(input_layer, output_layer)
 
 model.compile(loss=bce_dice_loss, optimizer="adam", metrics=["accuracy"])
@@ -171,7 +171,7 @@ fig.suptitle("Top row: original images, bottom row: augmented images")
 
 early_stopping = EarlyStopping(patience=10, verbose=1)
 model_checkpoint = ModelCheckpoint("./keras.model", save_best_only=True, verbose=1)
-reduce_lr = ReduceLROnPlateau(factor=0.1, patience=5, min_lr=0.00001, verbose=1)
+reduce_lr = ReduceLROnPlateau(factor=0.1, patience=5, min_lr=0.0000001, verbose=1)
 
 epochs = 200
 batch_size = 32

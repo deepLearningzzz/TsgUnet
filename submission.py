@@ -5,21 +5,15 @@ import matplotlib.pyplot as plt
 plt.style.use('seaborn-white')
 import seaborn as sns
 sns.set_style("white")
-from skimage.transform import resize
 from keras.preprocessing.image import load_img
 from keras import Model
-from keras.layers import Input, Conv2D, Conv2DTranspose, MaxPooling2D, concatenate, Dropout, BatchNormalization
-from keras.layers import Conv2D, Concatenate, MaxPooling2D
-from keras.layers import UpSampling2D, Dropout, BatchNormalization
+from keras.layers import Input
 from tqdm import tqdm_notebook
-from keras.losses import binary_crossentropy
-from keras import backend as K
 from modelutil import upsample
 from modelutil import build_model
 from modelutil import downsample
-from modelutil import dice_loss
-from modelutil import bce_dice_loss
 
+from modelutil import HourGlassNet
 img_size_ori = 101
 img_size_target = 128
 
@@ -32,7 +26,6 @@ train_df["images"] = [np.array(load_img("../input/train/images/{}.png".format(id
 
 train_df["masks"] = [np.array(load_img("../input/train/masks/{}.png".format(idx), grayscale=True)) / 255 for idx in
                      tqdm_notebook(train_df.index)]
-
 
 
 def cov_to_class(val):
@@ -59,13 +52,11 @@ ids_train, ids_valid, x_train, x_valid, y_train, y_valid, cov_train, cov_test, d
     test_size=0.2, stratify=train_df.coverage_class, random_state=1337)
 
 
-
-
 tmp_img = np.zeros((img_size_target, img_size_target), dtype=train_df.images.loc[ids_train[10]].dtype)
 tmp_img[:img_size_ori, :img_size_ori] = train_df.images.loc[ids_train[10]]
 
 input_layer = Input((img_size_target, img_size_target, 1))
-output_layer = build_model(input_layer, 32)
+output_layer = HourGlassNet(input_layer, 32)
 
 model = Model(input_layer, output_layer)
 
@@ -223,7 +214,7 @@ x_test = np.array(
 
 preds_test = model.predict(x_test)
 
-threshold_best = 0.7
+threshold_best = 0.7795
 pred_dict = {idx: RLenc(np.round(downsample(preds_test[i]) > threshold_best)) for i, idx in
              enumerate(tqdm_notebook(test_df.index.values))}
 
