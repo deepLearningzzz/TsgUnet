@@ -158,7 +158,15 @@ def build_model(input_layer, start_neurons):
     # 128 -> 64
     conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(input_layer)
     conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
-    conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
+    # conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
+    # conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
+    # conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
+    # conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
+    # conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
+    # conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
+    # conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
+    # conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
+    # conv1 = Conv2D(start_neurons * 1, (3, 3), activation="relu", padding="same")(conv1)
     conv1 = BatchNormalization()(conv1)
     conv1 = Activation('relu')(conv1)
     pool1 = MaxPooling2D((2, 2))(conv1)
@@ -192,11 +200,6 @@ def build_model(input_layer, start_neurons):
 
     # 16 -> 8
     conv4 = Conv2D(start_neurons * 8, (3, 3), activation="relu", padding="same")(pool3)
-    conv4 = Conv2D(start_neurons * 8, (3, 3), activation="relu", padding="same")(conv4)
-    conv4 = Conv2D(start_neurons * 8, (3, 3), activation="relu", padding="same")(conv4)
-    conv4 = Conv2D(start_neurons * 8, (3, 3), activation="relu", padding="same")(conv4)
-    conv4 = Conv2D(start_neurons * 8, (3, 3), activation="relu", padding="same")(conv4)
-    conv4 = Conv2D(start_neurons * 8, (3, 3), activation="relu", padding="same")(conv4)
     conv4 = Conv2D(start_neurons * 8, (3, 3), activation="relu", padding="same")(conv4)
     conv4 = Conv2D(start_neurons * 8, (1, 1), activation="relu", padding="same")(conv4)
     conv4 = BatchNormalization()(conv4)

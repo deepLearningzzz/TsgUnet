@@ -174,7 +174,7 @@ model_checkpoint = ModelCheckpoint("./keras.model", save_best_only=True, verbose
 reduce_lr = ReduceLROnPlateau(factor=0.1, patience=5, min_lr=0.0000001, verbose=1)
 
 epochs = 200
-batch_size = 32
+batch_size = 16
 
 history = model.fit(x_train, y_train,
                     validation_data=[x_valid, y_valid],
